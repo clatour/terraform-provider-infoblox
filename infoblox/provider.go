@@ -1,10 +1,11 @@
 package infoblox
 
 import (
+	"time"
+
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
-	"github.com/infobloxopen/infoblox-go-client"
-	"time"
+	ibclient "github.com/infobloxopen/infoblox-go-client"
 )
 
 //Provider returns a terraform.ResourceProvider.
@@ -60,6 +61,11 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("POOL_CONNECTIONS", "10"),
 				Description: "Maximum number of connections to establish to the Infoblox server. Zero means unlimited.",
 			},
+		},
+		DataSourcesMap: map[string]*schema.Resource{
+			"infoblox_network": dataSourceNetwork(),
+			// TODO maybe? probably a good number of other good DataSource options.
+			// "infoblox_network_view": dataSourceNetworkView(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"infoblox_network":        resourceNetwork(),
